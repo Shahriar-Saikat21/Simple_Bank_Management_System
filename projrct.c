@@ -12,6 +12,7 @@ typedef struct Account
     float accountBalance;
 } Account;
 
+void afterRightPassword();
 void createAccount();
 void displayAllAccount();
 void updateAccount();
@@ -20,6 +21,53 @@ void searchAccount();
 void transaction();
 
 int main()
+{
+    char passwordOption;
+
+    char password[10], storePassword[10] = "Ab1234@";
+
+    while (passwordOption != '0')
+    {
+        system("cls");
+        printf("\t\t\t====== Bank Management System ======\n");
+        printf("\n\t\t\t1. Enter Password");
+        printf("\n\t\t\t2. Renew Password");
+        printf("\n\t\t\t0. Exit");
+
+        printf("\n\n\n\t\t\tEnter Your Option: ");
+        scanf(" %c", &passwordOption);
+
+        switch (passwordOption)
+        {
+        case '1':
+            printf("\n\t\t\tEnter Password : ");
+            getchar();
+            gets(password);
+            if (strcmp(storePassword, password) == 0)
+            {
+                afterRightPassword();
+            }
+            else
+            {
+                printf("\n\t\t\tWrong Password ! Please Try Again");
+                printf("\n\n\t\t\tEnter any keys to continue.......");
+                getch();
+            }
+            break;
+        case '2':
+            break;
+        case '0':
+            printf("\n\t\t\t====== Thank You ======\n\t\t====== Created By : Shahriar Imtiaz Saikat ======\n");
+            break;
+        default:
+            printf("\n\t\t\tInvalid Option, Please Enter Right Option !\n");
+        }
+    }
+
+    return 0;
+}
+
+void afterRightPassword()
 {
     char option;
 
@@ -59,13 +107,11 @@ int main()
             transaction();
             break;
         case '0':
-            printf("\n\t\t\t====== Thank You ======\n\t\t====== Created By : Shahriar Imtiaz Saikat ======\n");
             break;
         default:
             printf("\n\t\t\tInvalid Option, Please Enter Right Option !\n");
         }
     }
-    return 0;
 }
 
 void createAccount()
