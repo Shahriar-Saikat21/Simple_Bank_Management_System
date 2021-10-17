@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <conio.h>
+#include <stdlib.h>
 
 typedef struct Account
 {
@@ -12,6 +13,8 @@ typedef struct Account
     float accountBalance;
 } Account;
 
+void passwordCheck();
+void passwordGenerator();
 void afterRightPassword();
 void createAccount();
 void displayAllAccount();
@@ -23,8 +26,6 @@ void transaction();
 int main()
 {
     char passwordOption;
-
-    char password[10], storePassword[10] = "Ab1234@";
 
     while (passwordOption != '0')
     {
@@ -40,21 +41,10 @@ int main()
         switch (passwordOption)
         {
         case '1':
-            printf("\n\t\t\tEnter Password : ");
-            getchar();
-            gets(password);
-            if (strcmp(storePassword, password) == 0)
-            {
-                afterRightPassword();
-            }
-            else
-            {
-                printf("\n\t\t\tWrong Password ! Please Try Again");
-                printf("\n\n\t\t\tEnter any keys to continue.......");
-                getch();
-            }
+            passwordCheck();
             break;
         case '2':
+            passwordGenerator();
             break;
         case '0':
             printf("\n\t\t\t====== Thank You ======\n\t\t====== Created By : Shahriar Imtiaz Saikat ======\n");
@@ -65,6 +55,88 @@ int main()
     }
 
     return 0;
+}
+
+void passwordCheck()
+{
+    char password[50], storePassword[50];
+
+    FILE *passwordFile = fopen("password.bin", "rb");
+    fscanf(passwordFile, "%s", storePassword);
+
+    if (passwordFile == NULL)
+    {
+        printf("\n\t\t\tCreate a password then try again !\n");
+        printf("\n\n\t\t\tEnter any keys to continue.......");
+        getch();
+        return;
+    }
+
+    printf("\n\t\t\tEnter Password : ");
+    getchar();
+    gets(password);
+
+    if (strcmp(storePassword, password) == 0)
+    {
+        afterRightPassword();
+    }
+    else
+    {
+        printf("\n\t\t\tWrong Password ! Please Try Again");
+        printf("\n\n\t\t\tEnter any keys to continue.......");
+        getch();
+    }
+
+    fclose(passwordFile);
+}
+
+void passwordGenerator()
+{
+    char storePassword[50], oldPassword[50], newPassword[50];
+
+    FILE *passwordFile = fopen("password.bin", "rb");
+    FILE *tempFile = fopen("tempPassword.bin", "wb");
+
+    if (passwordFile == NULL)
+    {
+        printf("\n\t\t\tPlease enter new password : ");
+        getchar();
+        gets(newPassword);
+        fprintf(tempFile, "%s", newPassword);
+
+        printf("\n\t\t\tNew Password has been created successfully.");
+    }
+    else
+    {
+        fscanf(passwordFile, "%s", storePassword);
+
+        printf("\n\t\t\tPlease enter old password : ");
+        getchar();
+        gets(oldPassword);
+
+        if (strcmp(storePassword, oldPassword) == 0)
+        {
+            printf("\n\t\t\tPlease enter new password : ");
+            getchar();
+            gets(newPassword);
+            fprintf(tempFile, "%s", newPassword);
+
+            printf("\n\t\t\tNew Password has been created successfully.");
+        }
+        else
+        {
+            printf("\n\t\t\tWrong Password ! PLease Try Later.... ");
+        }
+    }
+
+    fclose(passwordFile);
+    fclose(tempFile);
+
+    remove("password.bin");
+    rename("tempPassword.bin", "password.bin");
+
+    printf("\n\n\t\t\tEnter any keys to continue.......");
+    getch();
 }
 
 void afterRightPassword()
@@ -107,7 +179,8 @@ void afterRightPassword()
             transaction();
             break;
         case '0':
-            break;
+            printf("\n\t\t\t====== Thank You ======\n\t\t====== Created By : Shahriar Imtiaz Saikat ======\n");
+            exit(0);
         default:
             printf("\n\t\t\tInvalid Option, Please Enter Right Option !\n");
         }
