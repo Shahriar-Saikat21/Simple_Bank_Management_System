@@ -117,7 +117,6 @@ void passwordGenerator()
         if (strcmp(storePassword, oldPassword) == 0)
         {
             printf("\n\t\t\tPlease enter new password : ");
-            getchar();
             gets(newPassword);
             fprintf(tempFile, "%s", newPassword);
 
@@ -125,6 +124,7 @@ void passwordGenerator()
         }
         else
         {
+            fprintf(tempFile, "%s", storePassword);
             printf("\n\t\t\tWrong Password ! PLease Try Later.... ");
         }
     }
