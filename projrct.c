@@ -513,25 +513,37 @@ void transaction()
         if (strcmp(accountInformation.accountNumber, tempInformation.accountNumber) == 0)
         {
             flag++;
-            printf("\n\n\t\t\tDo you want to\n\t\t\t1.Deposit\n\t\t\t2.Withdraw?\n\n\t\t\tEnter your choice:");
+            printf("\n\n\t\t\tDo you want to\n\t\t\t1.Deposit\n\t\t\t2.Withdraw\n\n\t\t\tEnter your choice:");
             scanf("%d", &op);
             if (op == 1)
             {
+                printf("\n\t\t\tCurrent Balance:$ %.2f", accountInformation.accountBalance);
                 printf("\n\t\t\tEnter the amount you want to deposit:$ ");
                 scanf("%f", &tempInformation.accountBalance);
                 accountInformation.accountBalance += tempInformation.accountBalance;
+                printf("\n\t\t\tCurrent Balance after Deposit:$ %.2f", accountInformation.accountBalance);
 
                 fwrite(&accountInformation, sizeof(accountInformation), 1, temp);
                 printf("\n\n\t\t\tDeposited successfully!\n\n");
             }
             else
             {
+                printf("\n\t\t\tCurrent Balance:$ %.2f", accountInformation.accountBalance);
                 printf("\n\t\t\tEnter the amount you want to withdraw:$ ");
                 scanf("%f", &tempInformation.accountBalance);
-                accountInformation.accountBalance -= tempInformation.accountBalance;
+                if (accountInformation.accountBalance < tempInformation.accountBalance)
+                {
+                    printf("\n\n\t\t\tUnsufficient Balance!\n\n");
+                    fwrite(&accountInformation, sizeof(accountInformation), 1, temp);
+                }
+                else
+                {
+                    accountInformation.accountBalance -= tempInformation.accountBalance;
+                    printf("\n\t\t\tCurrent Balance after Withdraw:$ %.2f", accountInformation.accountBalance);
 
-                fwrite(&accountInformation, sizeof(accountInformation), 1, temp);
-                printf("\n\n\t\t\tWithdraw successfully!\n\n");
+                    fwrite(&accountInformation, sizeof(accountInformation), 1, temp);
+                    printf("\n\n\t\t\tWithdraw successfully!\n\n");
+                }
             }
         }
         else
