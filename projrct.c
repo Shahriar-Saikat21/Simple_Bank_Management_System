@@ -311,6 +311,16 @@ void updateAccount()
                 fwrite(&accountInformation, sizeof(accountInformation), 1, temp);
                 printf("\n\n\t\t\tUpdated successfully!\n\n");
             }
+            else if (choice == 4)
+            {
+                printf("\n\t\t\tEnter Contact No. to Update: ");
+                getchar();
+                gets(tempInformation.contactNum);
+                strcpy(accountInformation.contactNum, tempInformation.contactNum);
+
+                fwrite(&accountInformation, sizeof(accountInformation), 1, temp);
+                printf("\n\n\t\t\tUpdated successfully!\n\n");
+            }
             else
             {
                 printf("\n\t\t\tInvalid Option.");
